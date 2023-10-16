@@ -63,13 +63,39 @@ std_residuals <- rstandard(model)
 outliers <- abs(std_residuals) > 2  # You can adjust the threshold as needed
 
 # Question 3 --------------------------------------------------------------
+# First we have to define what we mean by the "mid-late 20th century. I will
+# define this as years between 1950 and 2000, inclusive:
+# We'll filter the data
+# Europe
+gapminder_euro1950_2000 <- gapminder  %>%
+  filter(continent == "Europe" & (year >=  1950 & year <= 2000)) %>%
+  mutate(pop_e6 = pop / 1000000) 
+
+ggplot(gapminder_euro1950_2000, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(col ="red") +
+  geom_smooth(method = lm, formula = y ~ x)
+
+# At middle gdps a straight line seems to fit very well, but at very low and 
+# very high gdpPercap, the data do not seem to be well described by a 
+# straight line
+
+# Asia 
+gapminder_asia1950_2000 <- gapminder  %>%
+  filter(continent == "Asia" & (year >=  1950 & year <= 2000)) %>%
+  mutate(pop_e6 = pop / 1000000) 
+
+ggplot(gapminder_asia1950_2000, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point(col ="red") +
+  geom_smooth(method = lm, formula = y ~ x)
+
+# A straight line does not describe these data very well. 
+# The slope of the line looks like it is being influenced a lot
+#  by a small number of points that have much higher gdps than 
+#  the rest. 
 
 
 
-
-
-
-
+# -------------------------------------------------------------------------
 #Add the regression line
 ggplot(gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point() + 
   geom_smooth(method=lm)
