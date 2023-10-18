@@ -23,7 +23,7 @@ ggplot(gapminder_euro2007, aes(x = pop_e6, y = lifeExp)) +
 ggplot(gapminder_euro2007, aes(x = gdpPercap, y = lifeExp)) + 
   geom_point(col = "red")
 
-#Questions 10/10/2023
+#Questions 11/10/2023
 #1.What sort of "model" might fit the relationship between life expectancy and GDP
 #   per capita?
 #2.Does the pattern look the same for countries in other continents, e.g. Asia? (Find the outlier)
@@ -93,7 +93,6 @@ ggplot(gapminder_asia1950_2000, aes(x = gdpPercap, y = lifeExp)) +
 #  by a small number of points that have much higher gdps than 
 #  the rest. 
 
-
 # Alternative approach - using tidyverse "pipes" ( "%>%" ) to avoid 
 #  creating a new dataframe every time we want to plot a subset the data
 
@@ -113,7 +112,6 @@ gapminder  %>%
 # So although the ggplot command goes across three lines of code, there is
 # no need for a %>% at the end of these lines.
 
-
 # The command above, but with further explanation for each line.
 
 gapminder  %>%                                       # Take the gapminder data, and...
@@ -125,23 +123,25 @@ gapminder  %>%                                       # Take the gapminder data, 
 
 
 # Questions 18/10/2023----
-#
 # 1: Display a table of the mean life expectancy in each continent in 2002. 
 #    If you can, display the means in descending order.
-
 # 2: Which continent had the most variation in life expectancy in 2002 across the
 #    the countries in that continent? Display tables (and if you can, graphs)
 #    to show the variation in life expectancy in 2002 for each continent. 
-#
-
 # 3. In 2002, which countries had the highest gdp per capita RELATIVE to the  
 #     mean gdp of countries in the same continent?
 #    (Hint, you'll need to group countries as above to work out the continent- )
 #     specific mean gdp, then ungroup to work out the difference between each
 #     country's gdp and the mean for the continent)
 
+# Question 1 --------------------------------------------------------------
+summary_data <- gapminder  %>%                                     
+  filter(year ==  2002) %>%
+  group_by(continent) %>% 
+  summarise(mean_life_exp = mean(lifeExp, na.rm = TRUE)) %>% 
+  arrange(desc(mean_life_exp))
 
-
+print(summary_data)
 
 # -------------------------------------------------------------------------
 #Add the regression line
